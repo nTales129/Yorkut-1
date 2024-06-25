@@ -70,19 +70,15 @@
         <h1>Criar nova publicação!</h1>
         <div class="criar-postagem" id="criar-postagem">
             <img class="imagem-preview" id="imagem-preview" src="https://www.cbvj.org.br/index/wp-content/uploads/2017/07/default.png" alt="Preview da Imagem" >
-            <form action="" class="form-postagem">
-                <div class="usuario-info amigo-info">
-                    <img src="https://medias.itatiaia.com.br/dims4/default/a1b9025/2147483647/strip/false/crop/592x592+138+0/resize/1000x1000!/quality/90/?url=https%3A%2F%2Fk2-prod-radio-itatiaia.s3.us-east-1.amazonaws.com%2Fbrightspot%2F62%2F39%2F48d3321f45c0a0486830d4fd5971%2Fwhatsapp-image-2024-04-12-at-10-48-39.jpeg"
-                        alt="" class="amigo-imagem">
-                    <span class="amigo-user">ochicoin</span>
-                </div>
+            <form action="{% url 'postar' %}" class="form-postagem" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in form.visible_fields %}
                 <div class="input-box">
-                    <label for="enviarImagem" class="label-enviar-imagem">Escolher Imagem</label>
-                    <input class="input-imagem" type="file" name="enviarImagem" id="enviarImagem" required>
-                    <label for="legenda-postagem" class="label-legenda">Legenda</label>
-                    <textarea name="legenda-postagem" id="legenda-postagem"
-                        placeholder="Escreva uma Legenda!"></textarea>
+                    <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
+                    {{ field }}
                 </div>
+                {% endfor %}
                 <button type="submit">Postar</button>
             </form>
         </div>

@@ -9,4 +9,7 @@ class Post(models.Model):
     legenda = models.TextField()
     data_hora_criacao = models.DateTimeField(auto_now_add=True)
     curtidas = models.IntegerField(default=0)
-    privacidade = models.BooleanField(default=False)
+    privacidade = models.BooleanField(default=True)
+    comentarios = models.TextField(blank=True)
+    
+

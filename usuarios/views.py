@@ -65,10 +65,6 @@ def cadastro(request):
     return render(request, 'usuarios/cadastro.html', {'form': form})
 
 
-def postar(request):
-     return render(request,'usuarios/pages/postar.html')
-
-
 def redefinir(request):
      return render(request,'usuarios/redefinir-senha.html')
          
