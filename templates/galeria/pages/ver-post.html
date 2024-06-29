@@ -114,27 +114,29 @@
                 </div>
             </div>
             <div class="ver-comentario">
-                <form class="fazer-comentario">
+                <form class="fazer-comentario" action="{% url 'comentario' post_id=post.id %}" method="post">
+                    {% csrf_token %}
                     <div class="suas-info">
                         <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.webp"
                             alt="" class="sua-imagem">
-                        <span class="seu-user">seusuer</span>
+                        <span class="seu-user">{{ request.user.username }}</span>
                     </div>
-
-                    <textarea name="" id="fazer-comentario" placeholder="Faça um comentario"></textarea>
-                    <button>Comentar</button>
+                
+                    <textarea name="texto" id="fazer-comentario" placeholder="Faça um comentário"></textarea>
+                    <button type="submit">Comentar</button>
                 </form>
-
                 <div class="outros-comentario">
+                    {% for comentario in comentario %}
                     <div class="comentario">
                         <div class="info-usuario">
-                            <img src="https://media.gettyimages.com/id/1428217516/pt/foto/harrison-new-jersey-lionel-messi-of-argentina-celebrates-his-goal-in-the-second-half-against.jpg?s=594x594&w=gi&k=20&c=XlVFHsrAsceFqNBJAAv1zT1KRU8fVNkGct9D1lb8SJ8="
-                                alt="" class="imagem">
-                            <span class="user">messi</span>
+                            <img src="{{ comentario.autor.profile.foto_perfil.url }}" alt="" class="imagem">
+                            <span class="user">{{ comentario.autor.username }}</span>
                         </div>
-                        <p class="texto">Te amo ney😍.</p>
+                        <p class="texto">{{ comentario.texto }}</p>
                     </div>
-
+                    {% empty %}
+                    <p>Nenhum comentário ainda.</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -143,11 +145,11 @@
     <!-- Aqui é onde vai ter um mini perfil e sugestão de amigos -->
     <section class="container-lateral" id="container-lateral">
         <div class="seu-perfil box">
-            <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.webp" alt=""
+            <img src="{{ request.user.profile.foto_perfil.url }}" alt=""
                 class="sua-imagem-perfil">
             <div class="seus-info-perfil">
-                <span class="seu-nome-perfil">Seu Nome</span>
-                <span class="seu-user-perfil">SeuUser</span>
+                <span class="seu-nome-perfil">{{ request.user.profile.nome_usuario }}</span>
+                <span class="seu-user-perfil">{{ request.user.username }}</span>
             </div>
             <a href="" class="btn-config">
                 <span class="material-symbols-outlined">

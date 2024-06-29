@@ -1,12 +1,21 @@
 #views
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
-from galeria.models import Post
+from django.http import HttpResponseRedirect
 
-from galeria.forms import PostForms
+from django.urls import reverse
+
+from galeria.models import Post, Comentario
+
+from galeria.forms import PostForms, ComentarioForm
 
 from django.contrib import messages
+
+from django.contrib.auth import get_user_model
+
+
+
 
 
 
@@ -19,7 +28,10 @@ def card(request):
         return redirect('login')
     
     posts = Post.objects.filter(privacidade=True)
-    context = {'posts': posts}
+    context = {
+        'posts': posts,
+        'user': request.user,  
+    }
     return render(request, 'galeria/card.html', context)
 
 def postar(request):
@@ -46,10 +58,39 @@ def apagar_post(request):
     pass
 
 def verpost(request):
-    return render(request, 'galeria/pages/ver-post.html')
+    comentarios = Comentario.objects.all()  
+    form = ComentarioForm()
+
+    context = {
+        'comentarios': comentarios,
+        'form': form,  
+    }
+    return render(request, 'galeria/pages/ver-post.html', context)
 
 def perfil(request):
     return render(request, 'galeria/pages/perfil.html')
 
 def amigos(request):
     return render(request, 'galeria/pages/amigos.html')
+
+def comentario(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            texto = form.cleaned_data['texto']
+            autor = request.user
+            Comentario.objects.create(post=post, autor=autor, texto=texto)
+            return HttpResponseRedirect(reverse('comentario', args=[post_id]))
+    else:
+        form = ComentarioForm()
+
+    comentarios = Comentario.objects.filter(post=post)
+
+    context = {
+        'post': post,
+        'form': form,
+        'comentarios': comentarios,
+    }
+    return render(request, 'seu_template_de_formulario.html', {'form': form})

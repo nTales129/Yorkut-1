@@ -9,7 +9,12 @@ class Post(models.Model):
     legenda = models.TextField()
     data_hora_criacao = models.DateTimeField(auto_now_add=True)
     curtidas = models.IntegerField(default=0)
-    privacidade = models.BooleanField(default=True)
-    comentarios = models.TextField(blank=True)
+    privacidade = models.BooleanField(default=True)    
+
+class Comentario(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comentario')
+    autor = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    texto = models.TextField()
+    data_hora = models.DateTimeField(auto_now_add=True)
     
 

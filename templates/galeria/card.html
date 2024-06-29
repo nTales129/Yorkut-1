@@ -121,11 +121,14 @@
 
     <!-- Aqui é onde vai ter um mini perfil e sugestão de amigos -->
     <section class="container-lateral" id="container-lateral">
+       
         <div class="seu-perfil box">
             <img src="https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.webp" alt="" class="sua-imagem-perfil">
             <div class="seus-info-perfil">
-                <span class="seu-nome-perfil">Seu Nome</span>
-                <span class="seu-user-perfil">SeuUser</span>
+    {% if user.is_authenticated %}
+                <span class="seu-nome-perfil">{{ user.get_username }}</span>
+                <span class="seu-user-perfil">{{ user.get_username }}</span>
+        {%endif%}
             </div>
             <a href="" class="btn-config">
                 <span class="material-symbols-outlined">

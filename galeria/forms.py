@@ -1,6 +1,6 @@
 from django import forms
 
-from galeria.models import Post
+from galeria.models import Post, Comentario
 
 from django.contrib.auth.models import User  
 
@@ -21,3 +21,11 @@ class PostForms(forms.ModelForm):
             if content_type not in ['image/jpeg', 'image/png', 'image/gif']:
                 raise forms.ValidationError('Somente JPEG, PNG, and GIF sao aceitas como formato de imagem.')
         return imagem
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto']
+        widgets = {
+            'texto': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Digite seu comentário aqui...'}),
+        }
